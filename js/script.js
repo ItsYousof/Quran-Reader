@@ -16,7 +16,6 @@ let currentAyahSpan = document.getElementById('current-ayah')
 const settingsBtn = document.getElementById('settings');
 const closeBtn = document.getElementById('close');
 let errorSound = new Audio('../data/error.mp3');
-let isRecording = false;
 
 let API_KEY = localStorage.getItem('API_KEY') || '';
 if (!API_KEY) {
@@ -266,22 +265,28 @@ async function handleTranscription(transcription) {
 }
 
 
-// Trigger the start/stop recording on button press
-voiceBtn.addEventListener('click', () => {
+// For starting/stopping recording on phones
+voiceBtn.addEventListener('touchstart', (event) => {
+    event.preventDefault();
     stopAudio();
-    if (!isRecording) {
-        startRecording();
-        isRecording = true;  // Set recording flag to true
+    startRecording();
+});
+
+voiceBtn.addEventListener('touchend', stopRecording);
+
+// For continuing audio on double-tap for phones
+let tapTimeout;
+voiceBtn.addEventListener('touchstart', () => {
+    if (!tapTimeout) {
+        tapTimeout = setTimeout(() => {
+            tapTimeout = null;
+        }, 300);
     } else {
-        stopRecording();
-        isRecording = false; // Set recording flag to false after stopping
+        clearTimeout(tapTimeout);
+        tapTimeout = null;
+        continueAudio();  // Double-tap action
     }
 });
-voiceBtn.addEventListener('dblclick', () => {
-    continueAudio();
-});
-
-
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('../sw.js')
         .then((registration) => {
