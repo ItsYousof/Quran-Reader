@@ -152,6 +152,7 @@ function jumpToAyah(ayahNumber) {
 
 // Start recording
 function startRecording() {
+    console.log("Started Recording.")
     navigator.mediaDevices.getUserMedia({ audio: true })
         .then(stream => {
             mediaRecorder = new MediaRecorder(stream);
@@ -165,6 +166,7 @@ function startRecording() {
 
 // Stop recording and send to OpenAI for transcription
 function stopRecording() {
+    console.log("Stopped Recording.")
     mediaRecorder.stop();
     mediaRecorder.addEventListener("stop", () => {
         const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
@@ -269,6 +271,7 @@ async function handleTranscription(transcription) {
 voiceBtn.addEventListener('touchstart', () => {
     stopAudio();
     startRecording();
+
 
     voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
 });

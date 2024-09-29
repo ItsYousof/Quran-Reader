@@ -1,5 +1,5 @@
 // sw.js
-const CACHE_NAME = 'quran-reader-cache-v3.6';
+const CACHE_NAME = 'quran-reader-cache-v3.75';
 const urlsToCache = [
     '/',
     '/index.html',
