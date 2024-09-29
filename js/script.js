@@ -266,13 +266,17 @@ async function handleTranscription(transcription) {
 
 
 // For starting/stopping recording on phones
-voiceBtn.addEventListener('touchstart', (event) => {
-    event.preventDefault();
+voiceBtn.addEventListener('touchstart', () => {
     stopAudio();
     startRecording();
+
+    voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
 });
 
-voiceBtn.addEventListener('touchend', stopRecording);
+voiceBtn.addEventListener('touchend', () => {
+    stopAudio();
+    voiceBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+});
 
 // For continuing audio on double-tap for phones
 let tapTimeout;
