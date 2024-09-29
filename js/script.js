@@ -266,16 +266,28 @@ async function handleTranscription(transcription) {
 
 
 // Trigger the start/stop recording on button press
-voiceBtn.addEventListener('mousedown', () => {
+// For starting/stopping recording on phones
+voiceBtn.addEventListener('touchstart', () => {
     stopAudio();
     startRecording();
 });
 
-voiceBtn.addEventListener('dblclick', () => {
-    continueAudio();
+voiceBtn.addEventListener('touchend', stopRecording);
+
+// For continuing audio on double-tap for phones
+let tapTimeout;
+voiceBtn.addEventListener('touchstart', () => {
+    if (!tapTimeout) {
+        tapTimeout = setTimeout(() => {
+            tapTimeout = null;
+        }, 300);
+    } else {
+        clearTimeout(tapTimeout);
+        tapTimeout = null;
+        continueAudio();  // Double-tap action
+    }
 });
 
-voiceBtn.addEventListener('mouseup', stopRecording);
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('../sw.js')
         .then((registration) => {
