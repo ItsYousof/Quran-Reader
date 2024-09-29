@@ -1,5 +1,5 @@
 // sw.js
-const CACHE_NAME = 'quran-reader-cache-v3.5';
+const CACHE_NAME = 'quran-reader-cache-v3.6';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -30,15 +30,16 @@ self.addEventListener('fetch', (event) => {
     );
 });
 
-// Update Service Worker
+// Update Service Worker and delete old caches
 self.addEventListener('activate', (event) => {
-    const cacheWhitelist = [CACHE_NAME];
+    const cacheWhitelist = [CACHE_NAME]; // Only keep the current cache version
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
-                    if (cacheWhitelist.indexOf(cacheName) === -1) {
-                        return caches.delete(cacheName);
+                    if (!cacheWhitelist.includes(cacheName)) {
+                        console.log(`Deleting old cache: ${cacheName}`);
+                        return caches.delete(cacheName); // Delete old caches
                     }
                 })
             );
