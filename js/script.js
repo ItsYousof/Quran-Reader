@@ -271,11 +271,12 @@ voiceBtn.addEventListener('click', () => {
     stopAudio();
     if (!isRecording) {
         startRecording();
+        isRecording = true;  // Set recording flag to true
     } else {
         stopRecording();
+        isRecording = false; // Set recording flag to false after stopping
     }
 });
-
 voiceBtn.addEventListener('dblclick', () => {
     continueAudio();
 });
